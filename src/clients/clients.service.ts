@@ -25,9 +25,14 @@ async findAll() {
   });
 }
 
-  update(id: number, updateClientDto: UpdateClientDto) {
-    return `This action updates a #${id} client`;
-  }
+  async update(id: number, updateClientDto: UpdateClientDto) {
+  return await this.prisma.client.update({
+    where: {
+      id,
+    },
+    data: updateClientDto,
+  });
+}
 
   async remove(id: number) {
   return await this.prisma.client.delete({
