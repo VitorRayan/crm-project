@@ -1,0 +1,235 @@
+.dashboard-container {
+    width: 900px;
+    min-height: 600px;
+
+    background-color: rgba(255,255,255,0.15);
+
+    backdrop-filter: blur(10px);
+
+    padding: 40px;
+
+    border-radius: 20px;
+}
+
+.dashboard-container h1 {
+    text-align: center;
+    color: white;
+    margin-bottom: 30px;
+}
+
+.dashboard-container form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.dashboard-container form input {
+    flex: 1;
+
+    padding: 12px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    outline: none;
+}
+
+.dashboard-container form button {
+    padding: 12px 20px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.clients-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.client-card {
+    background-color: rgba(255,255,255,0.1);
+
+    padding: 20px;
+
+    border-radius: 10px;
+
+    color: white;
+}
+
+.buttons {
+    margin-top: 10px;
+
+    display: flex;
+
+    gap: 10px;
+}
+
+.edit-btn {
+    background-color: #444;
+
+    color: white;
+}
+
+.delete-btn {
+    background-color: #a00000;
+
+    color: white;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.new-user-btn {
+    padding: 12px 20px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.modal-overlay {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(0,0,0,0.5);
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #1e293b;
+
+    padding: 30px;
+
+    border-radius: 10px;
+
+    width: 700px;
+}
+
+.logout-btn {
+    margin-bottom: 20px;
+
+    padding: 10px 18px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.clients-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    background-color: white;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+.clients-table th,
+.clients-table td {
+    padding: 15px;
+
+    text-align: left;
+
+    border-bottom: 1px solid #ddd;
+}
+
+.clients-table th {
+    background-color: #f5f5f5;
+}
+
+.clients-table tr:hover {
+    background-color: #f9f9f9;
+}
+
+.edit-btn {
+    margin-right: 10px;
+}
+
+.edit-btn,
+.delete-btn,
+.new-user-btn,
+.logout-btn {
+    transition: 0.3s;
+}
+
+.edit-btn:hover,
+.delete-btn:hover,
+.new-user-btn:hover,
+.logout-btn:hover {
+    opacity: 0.85;
+    transform: scale(1.03);
+}
+
+.dashboard-container select {
+    flex: 1;
+
+    padding: 12px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    outline: none;
+}
+
+.status-active {
+    color: green;
+    font-weight: bold;
+}
+
+.status-inactive {
+    color: red;
+    font-weight: bold;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 15px;
+}
+
+.modal-content input,
+.modal-content select {
+    width: 100%;
+
+    padding: 12px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    box-sizing: border-box;
+}

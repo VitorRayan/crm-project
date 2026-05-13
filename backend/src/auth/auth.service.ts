@@ -14,4 +14,25 @@ export class AuthService {
       },
     });
   }
+  async login(body: any) {
+  const user = await this.prisma.user.findUnique({
+    where: { email: body.email },
+  });
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  if (user.password !== body.password) {
+    throw new Error('Invalid password');
+  }
+
+  const { password, ...userWithoutPassword } = user;
+
+  return {
+    message: 'Login successful',
+    user: userWithoutPassword,
+  };
 }
+}
+

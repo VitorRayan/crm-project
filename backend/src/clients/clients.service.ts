@@ -13,17 +13,17 @@ export class ClientsService {
     });
   }
 
-async findAll() {
-  return await this.prisma.client.findMany();
-}
+  async findAll() {
+    return await this.prisma.client.findMany();
+  }
 
   async findOne(id: number) {
-  return await this.prisma.client.findUnique({
-    where: {
-      id,
-    },
-  });
-}
+    return await this.prisma.client.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
 
   async update(id: number, updateClientDto: UpdateClientDto) {
   return await this.prisma.client.update({
