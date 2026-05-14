@@ -3,6 +3,8 @@ import axios from "axios";
 
 import "./Dashboard.css";
 
+import toast from "react-hot-toast";
+
 const Dashboard = ({ setScreen }) => {
 
     const [clients, setClients] = useState([]);
@@ -25,6 +27,7 @@ const Dashboard = ({ setScreen }) => {
 
         } catch (error) {
             console.log(error);
+            toast.error("Algo deu errado");
         }
     }
 
@@ -48,6 +51,7 @@ const Dashboard = ({ setScreen }) => {
                         status,
                     }
                 );
+                toast.success("Cliente atualizado!");
 
                 setEditingId(null);
 
@@ -62,6 +66,7 @@ const Dashboard = ({ setScreen }) => {
                         status,
                     }
                 );
+                toast.success("Cliente criado!");
             }
 
             setNome("");
@@ -75,6 +80,7 @@ const Dashboard = ({ setScreen }) => {
 
         } catch (error) {
             console.log(error);
+            toast.error("Email já cadastrado");
         }
     }
 
@@ -85,11 +91,13 @@ const Dashboard = ({ setScreen }) => {
             await axios.delete(
                 `http://localhost:3000/clients/${id}`
             );
+            toast.error("Cliente deletado!");
 
             fetchClients();
 
         } catch (error) {
             console.log(error);
+            toast.error("Algo deu errado");
         }
     }
 
@@ -102,6 +110,14 @@ const Dashboard = ({ setScreen }) => {
 
         setEditingId(client.id);
     }
+
+    const filteredClients = clients.filter((client) => {
+        const search = searchTerm.toLowerCase();
+        return (
+            client.nome.toLowerCase().includes(search) ||
+            client.email.toLowerCase().includes(search)
+        );
+    });
 
     return (
         <div className="dashboard-container">
@@ -225,15 +241,8 @@ const Dashboard = ({ setScreen }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {clients
-                                .filter((client) => {
-                                    const search = searchTerm.toLowerCase();
-                                    return (
-                                        client.nome.toLowerCase().includes(search) ||
-                                        client.email.toLowerCase().includes(search)
-                                    );
-                                })
-                                .map((client) => (
+                            {filteredClients.length > 0 ? (
+                                filteredClients.map((client) => (
                                 <tr key={client.id}>
                                     <td>{client.nome}</td>
                                     <td>{client.email}</td>
@@ -277,7 +286,16 @@ const Dashboard = ({ setScreen }) => {
                                         </div>
                                     </td>
                                 </tr>
-                            ))}
+                            ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="5">
+                                        <div className="empty-state" style={{ padding: "2rem 1rem" }}>
+                                            <p>Cliente não encontrado</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 ) : (

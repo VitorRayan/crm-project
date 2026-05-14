@@ -4,6 +4,8 @@ import axios from "axios";
 
 import "./Register.css";
 
+import toast from "react-hot-toast";
+
 const Register = ({ setScreen }) => {
 
     const [email, setEmail] = useState("");
@@ -17,6 +19,7 @@ const Register = ({ setScreen }) => {
 
     if(password !== confirmPassword){
         setError("As senhas não coincidem");
+        toast.error("As senhas não coincidem");
         return;
     }
 
@@ -30,15 +33,18 @@ const Register = ({ setScreen }) => {
             }
         );
 
-        alert("Cadastro realizado!");
+        toast.success("Cadastro realizado com sucesso!", {
+            duration: 3000,
+        });
 
         setScreen("login");
 
     } catch (error) {
 
         console.log(error);
+        toast.error("Email já cadastrado");
 
-        setError("Erro ao cadastrar");
+        setError("Email já cadastrado");
     }
 };
 

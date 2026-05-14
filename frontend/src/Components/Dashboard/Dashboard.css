@@ -43,8 +43,8 @@
 .logout-btn {
   padding: var(--space-md) var(--space-lg);
   background-color: transparent;
-  border: 1px solid var(--color-border);
-  color: var(--color-text-secondary);
+  border: 1px solid var(--color-error);
+  color: var(--color-error);
   border-radius: var(--radius-lg);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
@@ -52,11 +52,12 @@
   outline: none;
   transition: all var(--transition-base);
 }
+
 .logout-btn:hover {
-  background-color: var(--color-bg-hover);
-  border-color: var(--color-error);
+  background-color: rgba(239, 68, 68, 0.1);
   color: var(--color-error);
 }
+
 .logout-btn:active {
   transform: scale(0.98);
 }
@@ -78,7 +79,8 @@
 }
 .search-input {
   flex: 1;
-  max-width: 350px;
+  width: 100%;
+  max-width: none;
   padding: var(--space-md) var(--space-lg);
   background-color: var(--color-bg-tertiary);
   border: 1px solid var(--color-border);
@@ -135,11 +137,14 @@
   background: var(--color-bg-secondary);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
-  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   box-shadow: var(--shadow-md);
+  max-width: 100%;
 }
 .clients-table {
   width: 100%;
+  min-width: 650px;
   border-collapse: collapse;
   font-size: var(--font-size-sm);
 }
@@ -517,31 +522,5 @@
   .modal-actions {
     flex-direction: column;
   }
-  .clients-table thead {
-    display: none;
-  }
-  .clients-table tbody tr {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid var(--color-border);
-    margin-bottom: var(--space-md);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-  }
-  .clients-table td {
-    display: flex;
-    justify-content: space-between;
-    padding: var(--space-md);
-    border: none;
-    border-bottom: 1px solid var(--color-border);
-  }
-  .clients-table td:last-child {
-    border-bottom: none;
-  }
-  .clients-table td::before {
-    content: attr(data-label);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-text-secondary);
-    min-width: 100px;
-  }
+
 }

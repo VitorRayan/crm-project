@@ -2,7 +2,7 @@ import {FaUser, FaLock} from 'react-icons/fa';
 import { useState } from 'react';
 import axios from "axios";
 import "./Login.css";
-
+import toast from "react-hot-toast";
 
 const Login = ({ setScreen }) => {
 
@@ -23,6 +23,7 @@ const Login = ({ setScreen }) => {
                 password,
             }
         );
+        toast.success("Login realizado com sucesso!");
 
         setError("");
 
@@ -31,15 +32,16 @@ const Login = ({ setScreen }) => {
     } catch (error) {
 
         console.log(error);
+        toast.error("Email ou senha inválidos");
 
         setError("Email ou senha inválidos");
     }
 };
 
-
   return (
     <div className="contanier">
         <form onSubmit={handleSubmit}>
+            <h1>CRM System</h1>
             <h1>Acesse o sistema</h1>
             <div className ="input-field">
                 <input 
