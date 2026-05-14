@@ -6,6 +6,7 @@ import "./Dashboard.css";
 const Dashboard = ({ setScreen }) => {
 
     const [clients, setClients] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
 
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
@@ -16,7 +17,6 @@ const Dashboard = ({ setScreen }) => {
     const [editingId, setEditingId] = useState(null);
     const [showModal, setShowModal] = useState(false);
 
-    // LISTAR CLIENTES
     async function fetchClients() {
         try {
             const response = await axios.get("http://localhost:3000/clients");
@@ -28,18 +28,15 @@ const Dashboard = ({ setScreen }) => {
         }
     }
 
-    // CARREGA CLIENTES AO ABRIR
     useEffect(() => {
         fetchClients();
     }, []);
 
-    // ADICIONAR CLIENTE
     async function handleSubmit(e) {
         e.preventDefault();
 
         try {
 
-            // EDITAR
             if(editingId){
 
                 await axios.patch(
@@ -56,7 +53,6 @@ const Dashboard = ({ setScreen }) => {
 
             } else {
 
-                // CRIAR
                 await axios.post(
                     "http://localhost:3000/clients",
                     {
@@ -82,7 +78,6 @@ const Dashboard = ({ setScreen }) => {
         }
     }
 
-    // EXCLUIR
     async function handleDelete(id) {
 
         try {
@@ -98,7 +93,6 @@ const Dashboard = ({ setScreen }) => {
         }
     }
 
-    // EDITAR
     function handleEdit(client) {
 
         setNome(client.nome);
@@ -111,158 +105,190 @@ const Dashboard = ({ setScreen }) => {
 
     return (
         <div className="dashboard-container">
-
-            <h1>CRM Dashboard</h1>
-            <button
-                className="logout-btn"
-                onClick={() => setScreen("login")}
-            >
-                Sair
-            </button>
-
-        <div className="top-bar">
-
-            <button
-                className="new-user-btn"
-                onClick={() => setShowModal(true)}
-            >
-                + Novo Usuário
-            </button>
-
-        </div>
-
-            {showModal && (
-
-        <div className="modal-overlay">
-
-            <div className="modal-content">
-
-                <form onSubmit={handleSubmit}>
-
-                <input
-                    type="text"
-                    placeholder="Nome"
-                    value={nome}
-                    onChange={(e) => setNome(e.target.value)}
-                    required
-                />
-
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <select
-                    value={nivel}
-                    onChange={(e) => setNivel(e.target.value)}
+            <div className="dashboard-header">
+                <h1>CRM Dashboard</h1>
+                <button
+                    className="logout-btn"
+                    onClick={() => setScreen("login")}
+                    title="Fazer logout da conta"
                 >
-
-                    <option value="Cliente">
-                        Cliente
-                    </option>
-
-                    <option value="Admin">
-                        Admin
-                    </option>
-
-                </select>
-
-                <select
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value)}
-                >
-
-                    <option value="Ativo">
-                        Ativo
-                    </option>
-
-                    <option value="Inativo">
-                        Inativo
-                    </option>
-
-                </select>
-
-                <button type="submit">
-                    {editingId ? "Salvar" : "Adicionar"}
+                    Sair
                 </button>
-
-                </form>
-
             </div>
 
-        </div>
+            <div className="top-bar">
+                <div className="top-bar-left">
+                    <input
+                        type="text"
+                        className="search-input"
+                        placeholder="Procurar clientes..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </div>
+                <button
+                    className="new-user-btn"
+                    onClick={() => {
+                        setEditingId(null);
+                        setNome("");
+                        setEmail("");
+                        setNivel("Cliente");
+                        setStatus("Ativo");
+                        setShowModal(true);
+                    }}
+                    title="Criar novo cliente"
+                >
+                    + Novo Cliente
+                </button>
+            </div>
 
-)}
+            {showModal && (
+                <div className="modal-overlay" onClick={() => setShowModal(false)}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <h2>{editingId ? "Editar Cliente" : "Novo Cliente"}</h2>
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label htmlFor="nome">Nome Completo</label>
+                                <input
+                                    id="nome"
+                                    type="text"
+                                    placeholder="ex: João Silva"
+                                    value={nome}
+                                    onChange={(e) => setNome(e.target.value)}
+                                    required
+                                />
+                            </div>
 
-            <table className="clients-table">
+                            <div className="form-group">
+                                <label htmlFor="email">E-mail</label>
+                                <input
+                                    id="email"
+                                    type="email"
+                                    placeholder="ex: joao@example.com"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                />
+                            </div>
 
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th>Status</th>
-                        <th>Nível</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    {clients.map((client) => (
-
-                        <tr key={client.id}>
-
-                            <td>{client.nome}</td>
-
-                            <td>{client.email}</td>
-
-                            <td>
-
-                                <span
-                                    className={
-                                        client.status === "Ativo"
-                                        ? "status-active"
-                                        : "status-inactive"
-                                    }
+                            <div className="form-group">
+                                <label htmlFor="nivel">Nível de Acesso</label>
+                                <select
+                                    id="nivel"
+                                    value={nivel}
+                                    onChange={(e) => setNivel(e.target.value)}
                                 >
-                                    {client.status}
-                                </span>
+                                    <option value="Cliente">Cliente</option>
+                                    <option value="Admin">Administrador</option>
+                                </select>
+                            </div>
 
-                            </td>
+                            <div className="form-group">
+                                <label htmlFor="status">Status</label>
+                                <select
+                                    id="status"
+                                    value={status}
+                                    onChange={(e) => setStatus(e.target.value)}
+                                >
+                                    <option value="Ativo">Ativo</option>
+                                    <option value="Inativo">Inativo</option>
+                                </select>
+                            </div>
 
-                            <td>{client.nivel}</td>
-
-                            <td>
-
+                            <div className="modal-actions">
                                 <button
-                                    className="edit-btn"
-                                    onClick={() => {
-                                        handleEdit(client);
-                                        setShowModal(true);
-                                    }}
+                                    type="button"
+                                    className="modal-close-btn"
+                                    onClick={() => setShowModal(false)}
                                 >
-                                    Editar
+                                    Cancelar
                                 </button>
-
-                                <button
-                                    className="delete-btn"
-                                    onClick={() => handleDelete(client.id)}
-                                >
-                                    Excluir
+                                <button type="submit">
+                                    {editingId ? "Salvar Alterações" : "Criar Cliente"}
                                 </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
 
-                            </td>
-
-                        </tr>
-
-                    ))}
-
-                </tbody>
-
-            </table>
-
+            <div className="table-wrapper">
+                {clients.length > 0 ? (
+                    <table className="clients-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>E-mail</th>
+                                <th>Status</th>
+                                <th>Nível</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {clients
+                                .filter((client) => {
+                                    const search = searchTerm.toLowerCase();
+                                    return (
+                                        client.nome.toLowerCase().includes(search) ||
+                                        client.email.toLowerCase().includes(search)
+                                    );
+                                })
+                                .map((client) => (
+                                <tr key={client.id}>
+                                    <td>{client.nome}</td>
+                                    <td>{client.email}</td>
+                                    <td>
+                                        <span
+                                            className={`status-badge ${
+                                                client.status === "Ativo"
+                                                    ? "status-active"
+                                                    : "status-inactive"
+                                            }`}
+                                        >
+                                            {client.status}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span className="nivel-badge">
+                                            {client.nivel}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div className="action-buttons">
+                                            <button
+                                                className="edit-btn"
+                                                onClick={() => {
+                                                    handleEdit(client);
+                                                    setShowModal(true);
+                                                }}
+                                                title="Editar cliente"
+                                            >
+                                                Editar
+                                            </button>
+                                            <button
+                                                className="delete-btn"
+                                                onClick={() =>
+                                                    handleDelete(client.id)
+                                                }
+                                                title="Deletar cliente"
+                                            >
+                                                Excluir
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                ) : (
+                    <div className="empty-state">
+                        <p>Nenhum cliente encontrado</p>
+                        <p style={{ fontSize: "var(--font-size-sm)" }}>
+                            Clique em "Novo Cliente" para começar
+                        </p>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

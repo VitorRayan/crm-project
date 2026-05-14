@@ -61,13 +61,7 @@ const Login = ({ setScreen }) => {
                 <FaLock className="icon" />
             </div>
 
-            <div className="recall-forget">
-                <label>
-                    <input type="checkbox" />
-                    Manter Conectado
-                </label>
-                <a href="#">Esqueci a senha</a>
-            </div>
+
 
             <button>Entrar</button>
 
